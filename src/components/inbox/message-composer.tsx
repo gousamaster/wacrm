@@ -257,14 +257,17 @@ export function MessageComposer({
 
   useEffect(() => {
     if (!text.startsWith("/") || slashReplies.length || slashLoading) return;
-    let cancelled = false;
     setSlashLoading(true);
     void fetch("/api/quick-replies", { cache: "no-store" })
-      .then((res) => res.json())
-      .then((data) => { if (!cancelled) setSlashReplies((data.quick_replies as QuickReply[]) ?? []); })
-      .catch(() => {})
-      .finally(() => { if (!cancelled) setSlashLoading(false); });
-    return () => { cancelled = true; };
+      .then(async (res) => {
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error ?? "No se pudieron cargar las respuestas");
+        setSlashReplies((data.quick_replies as QuickReply[]) ?? []);
+      })
+      .catch((err) => {
+        toast.error(err instanceof Error ? err.message : "No se pudieron cargar las respuestas");
+      })
+      .finally(() => setSlashLoading(false));
   }, [text, slashReplies.length, slashLoading]);
 
   const handleKeyDown = useCallback(
