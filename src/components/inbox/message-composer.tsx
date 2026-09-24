@@ -153,7 +153,7 @@ export function MessageComposer({
   const [interactivePayload, setInteractivePayload] =
     useState<InteractiveMessagePayload>(blankButtonsPayload);
   const [savingQuickReply, setSavingQuickReply] = useState(false);
-  const [quickReplyOpen, setQuickReplyOpen] = useState(false);
+  const [quickReplyOpen, setQuickReplyOpen] = useState(false);\n  const [slashReplies, setSlashReplies] = useState<QuickReply[]>([]);\n  const [slashLoading, setSlashLoading] = useState(false);
 
   // Media attachment state. `draft` holds an uploaded-but-not-yet-sent
   // attachment; `busy` covers the upload/transcode window.
@@ -236,14 +236,48 @@ export function MessageComposer({
     }
   }, [text, sending, sessionExpired, onSend, replyTo?.id]);
 
+  const slashQuery = text.startsWith("/") ? text.toLowerCase() : "";
+  const slashMatches = slashQuery
+    ? slashReplies.filter((qr) => qr.kind === "text" && qr.title.toLowerCase().includes(slashQuery)).slice(0, 8)
+    : [];
+
+  const chooseSlashReply = useCallback((qr: QuickReply) => {
+    setText(qr.content_text ?? "");
+    requestAnimationFrame(() => {
+      adjustHeight();
+      const el = textareaRef.current;
+      if (el) {
+        el.focus();
+        el.setSelectionRange(el.value.length, el.value.length);
+      }
+    });
+  }, [adjustHeight]);
+
+  useEffect(() => {
+    if (!text.startsWith("/") || slashReplies.length || slashLoading) return;
+    let cancelled = false;
+    setSlashLoading(true);
+    void fetch("/api/quick-replies", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => { if (!cancelled) setSlashReplies((data.quick_replies as QuickReply[]) ?? []); })
+      .catch(() => {})
+      .finally(() => { if (!cancelled) setSlashLoading(false); });
+    return () => { cancelled = true; };
+  }, [text, slashReplies.length, slashLoading]);
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLTextAreaElement>) => {
       if (e.key === "Enter" && !e.shiftKey) {
+        if (slashMatches.length > 0) {
+          e.preventDefault();
+          chooseSlashReply(slashMatches[0]);
+          return;
+        }
         e.preventDefault();
         handleSend();
       }
     },
-    [handleSend]
+    [handleSend, slashMatches, chooseSlashReply]
   );
 
   const handleChange = useCallback(
@@ -726,6 +760,27 @@ export function MessageComposer({
             )}
           </GatedButton>
 
+          <div className="relative flex-1">
+            {text.startsWith("/") && (
+              <div className="absolute bottom-full left-0 right-0 z-50 mb-2 max-h-72 overflow-y-auto rounded-xl border border-border bg-popover p-1 shadow-xl">
+                <div className="px-3 py-2 text-xs font-medium text-muted-foreground">Respuestas rápidas Go USA</div>
+                {slashLoading ? (
+                  <div className="flex items-center gap-2 px-3 py-3 text-xs text-muted-foreground">
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" /> Cargando respuestas...
+                  </div>
+                ) : slashMatches.length ? (
+                  slashMatches.map((qr) => (
+                    <button key={qr.id} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => chooseSlashReply(qr)}
+                      className="block w-full rounded-lg px-3 py-2 text-left hover:bg-muted">
+                      <span className="block text-sm font-medium text-foreground">{qr.title}</span>
+                      <span className="block truncate text-xs text-muted-foreground">{qr.content_text}</span>
+                    </button>
+                  ))
+                ) : (
+                  <div className="px-3 py-3 text-xs text-muted-foreground">No encontramos una respuesta para “{text}”.</div>
+                )}
+              </div>
+            )}
           <textarea
             ref={textareaRef}
             value={text}
@@ -745,10 +800,11 @@ export function MessageComposer({
             // The placeholder text also surfaces the read-only state.
             title={readOnly ? t("readOnlyTitle") : undefined}
             className={cn(
-              "flex-1 resize-none rounded-xl border border-border bg-muted px-4 py-2.5 text-sm text-foreground placeholder-muted-foreground outline-none transition-colors focus:border-primary/50",
+              "w-full resize-none rounded-xl border border-border bg-muted px-4 py-2.5 text-sm text-foreground placeholder-muted-foreground outline-none transition-colors focus:border-primary/50",
               (sessionExpired || readOnly) && "cursor-not-allowed opacity-50"
             )}
           />
+          </div>
 
           <GatedButton
             size="sm"
