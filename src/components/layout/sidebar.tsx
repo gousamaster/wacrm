@@ -119,6 +119,14 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
   const { profile, profileLoading, account, accountRole, signOut } = useAuth();
   const totalUnread = useTotalUnread();
   const unreadNotifications = useUnreadNotifications();
+  // Go USA: agents focus on customer communication. They can answer any
+  // conversation; CRM/commercial workflows remain in NEXUS.
+  const visibleNavItems =
+    accountRole === "agent"
+      ? navItems.filter((item) =>
+          ["/inbox", "/notifications", "/contacts"].includes(item.href),
+        )
+      : navItems;
   // Only surface the account-name strip when it actually carries
   // information. A solo user's personal account is named after them
   // (the 017 signup trigger seeds it from `full_name`), so showing it
@@ -208,7 +216,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
         {/* Main navigation */}
         <nav className="flex-1 overflow-y-auto px-3 py-4">
           <ul className="flex flex-col gap-1">
-            {navItems.map((item) => {
+            {visibleNavItems.map((item) => {
               const isActive =
                 pathname === item.href ||
                 (item.href !== "/dashboard" && pathname.startsWith(item.href));
@@ -268,9 +276,9 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
             })}
           </ul>
 
-          <div className="my-4 border-t border-border" />
+          {accountRole !== "agent" && <div className="my-4 border-t border-border" />}
 
-          <ul className="flex flex-col gap-1">
+          {accountRole !== "agent" && <ul className="flex flex-col gap-1">
             {bottomNavItems.map((item) => {
               const isActive = pathname.startsWith(item.href);
               return (
@@ -290,7 +298,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
                 </li>
               );
             })}
-          </ul>
+          </ul>}
         </nav>
 
         {/* User section */}
