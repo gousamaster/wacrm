@@ -570,7 +570,7 @@ export default function InboxPage() {
         <div
           className={cn(
             "flex h-full flex-1 lg:flex-none",
-            hasActiveConv ? "hidden lg:flex" : "flex",
+            hasActiveConv ? "hidden lg:flex" : "flex lg:w-96 lg:flex-none",
           )}
         >
           <ConversationList
@@ -594,8 +594,8 @@ export default function InboxPage() {
             on the right. Issue #165. */}
         <div
           className={cn(
-            "flex h-full min-w-0 flex-1 lg:flex",
-            hasActiveConv ? "flex" : "hidden lg:flex",
+            "flex h-full min-w-0 flex-1",
+            hasActiveConv ? "flex" : "hidden",
           )}
         >
           <MessageThread
@@ -619,7 +619,7 @@ export default function InboxPage() {
             agent hasn't collapsed it via the thread-header toggle (#258).
             On mobile it's always hidden (the `lg:block` below), so the
             toggle — which is itself desktop-only — never affects it. */}
-        {contactPanelOpen && (
+        {hasActiveConv && contactPanelOpen && (
           <div className="hidden lg:block">
             <ContactSidebar contact={activeContact} />
           </div>
