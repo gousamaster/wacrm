@@ -62,67 +62,67 @@
   },
   "Dashboard": {
     "page": {
-      "title": "Dashboard",
-      "description": "Live analytics across conversations, contacts, deals, broadcasts, and automations.",
-      "activeConversations": "Active Conversations",
-      "newContactsToday": "New Contacts Today",
-      "openDealsValue": "Open Deals Value",
-      "messagesSentToday": "Messages Sent Today",
-      "newTodayVsYesterday": "new today vs yesterday",
-      "vsYesterday": "vs yesterday",
-      "openDeals": "{count} open {count, plural, =1 {deal} other {deals}}",
-      "noChange": "No change {suffix}"
+      "title": "Resumen",
+      "description": "Vista rápida de conversaciones, contactos, oportunidades, campañas y actividad del equipo.",
+      "activeConversations": "Conversaciones activas",
+      "newContactsToday": "Contactos nuevos hoy",
+      "openDealsValue": "Valor de oportunidades abiertas",
+      "messagesSentToday": "Mensajes enviados hoy",
+      "newTodayVsYesterday": "nuevas hoy vs. ayer",
+      "vsYesterday": "vs. ayer",
+      "openDeals": "{count} {count, plural, =1 {oportunidad abierta} other {oportunidades abiertas}}",
+      "noChange": "Sin cambios {suffix}"
     },
     "quickActions": {
-      "newContact": "New Contact",
-      "newDeal": "New Deal",
-      "newBroadcast": "New Broadcast",
-      "newAutomation": "New Automation"
+      "newContact": "Nuevo contacto",
+      "newDeal": "Nueva oportunidad",
+      "newBroadcast": "Nueva campaña",
+      "newAutomation": "Nueva automatización"
     },
     "activityFeed": {
-      "title": "Recent Activity",
-      "viewAll": "View all →",
-      "noActivity": "No activity yet",
-      "noActivityHint": "Activity from messages, deals, broadcasts, and automations will appear here.",
-      "showingOf": "Showing {visible} of {totalLoaded}{plus}",
-      "show": "Show",
-      "timeS": "{sec}s ago",
-      "timeM": "{min}m ago",
-      "timeH": "{hr}h ago",
-      "timeD": "{day}d ago"
+      "title": "Actividad reciente",
+      "viewAll": "Ver todo →",
+      "noActivity": "Aún no hay actividad",
+      "noActivityHint": "Aquí aparecerá la actividad de mensajes, oportunidades, campañas y automatizaciones.",
+      "showingOf": "Mostrando {visible} de {totalLoaded}{plus}",
+      "show": "Mostrar",
+      "timeS": "hace {sec}s",
+      "timeM": "hace {min}min",
+      "timeH": "hace {hr}h",
+      "timeD": "hace {day}d"
     },
     "conversationsChart": {
-      "title": "Conversations Over Time",
-      "description": "Daily message volume by direction",
-      "days": "{count} days",
-      "noActivity": "No message activity in this range",
-      "noActivityHint": "Send or receive messages to start populating this chart.",
-      "incoming": "Incoming",
-      "outgoing": "Outgoing",
-      "tooltipIncoming": "{count} incoming",
-      "tooltipOutgoing": "{count} outgoing",
-      "ariaLabel": "Conversations per day"
+      "title": "Conversaciones en el tiempo",
+      "description": "Cantidad diaria de mensajes enviados y recibidos",
+      "days": "{count} días",
+      "noActivity": "No hay mensajes en este período",
+      "noActivityHint": "Envía o recibe mensajes para comenzar a ver información aquí.",
+      "incoming": "Recibidos",
+      "outgoing": "Enviados",
+      "tooltipIncoming": "{count} recibidos",
+      "tooltipOutgoing": "{count} enviados",
+      "ariaLabel": "Conversaciones por día"
     },
     "pipelineDonut": {
-      "title": "Pipeline Value",
-      "description": "Open deals by stage",
-      "noOpenDeals": "No open deals yet",
-      "noOpenDealsHint": "Create deals in Pipelines to see stage breakdowns here.",
-      "dealCount": "{count} {count, plural, =1 {deal} other {deals}}",
+      "title": "Valor en seguimiento",
+      "description": "Oportunidades abiertas por etapa",
+      "noOpenDeals": "Aún no hay oportunidades abiertas",
+      "noOpenDealsHint": "Crea oportunidades en Seguimiento para ver aquí su distribución por etapas.",
+      "dealCount": "{count} {count, plural, =1 {oportunidad} other {oportunidades}}",
       "total": "Total",
-      "ariaLabel": "Pipeline value by stage"
+      "ariaLabel": "Valor de oportunidades por etapa"
     },
     "responseTimeChart": {
-      "title": "Average First Response Time",
-      "description": "Minutes to reply to a customer's first unreplied message, by weekday",
-      "target": "target {minutes}m",
-      "thisWeek": "This week:",
-      "lastWeek": "Last week:",
-      "noReplies": "No replies recorded yet",
-      "noRepliesHint": "This chart fills in as you reply to customer messages."
+      "title": "Tiempo promedio de primera respuesta",
+      "description": "Minutos que tarda el equipo en responder el primer mensaje pendiente del cliente, por día de la semana",
+      "target": "meta {minutes} min",
+      "thisWeek": "Esta semana:",
+      "lastWeek": "Semana anterior:",
+      "noReplies": "Aún no hay respuestas registradas",
+      "noRepliesHint": "Este gráfico se completará a medida que el equipo responda mensajes."
     },
     "emptyState": {
-      "title": "Not enough data yet"
+      "title": "Aún no hay suficientes datos"
     }
   },
   "Inbox": {
