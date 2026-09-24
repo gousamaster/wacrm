@@ -153,7 +153,9 @@ export function MessageComposer({
   const [interactivePayload, setInteractivePayload] =
     useState<InteractiveMessagePayload>(blankButtonsPayload);
   const [savingQuickReply, setSavingQuickReply] = useState(false);
-  const [quickReplyOpen, setQuickReplyOpen] = useState(false);\n  const [slashReplies, setSlashReplies] = useState<QuickReply[]>([]);\n  const [slashLoading, setSlashLoading] = useState(false);
+  const [quickReplyOpen, setQuickReplyOpen] = useState(false);
+  const [slashReplies, setSlashReplies] = useState<QuickReply[]>([]);
+  const [slashLoading, setSlashLoading] = useState(false);
 
   // Media attachment state. `draft` holds an uploaded-but-not-yet-sent
   // attachment; `busy` covers the upload/transcode window.
@@ -401,7 +403,8 @@ export function MessageComposer({
       // Separate the snippet from any existing draft with a newline so the
       // words don't run together ("Thanks" + "we'll…" → "Thankswe'll…").
       setText((prev) =>
-        prev && !/\s$/.test(prev) ? `${prev}\n${body}` : `${prev}${body}`,
+        prev && !/\s$/.test(prev) ? `${prev}
+${body}` : `${prev}${body}`,
       );
       requestAnimationFrame(() => {
         adjustHeight();
