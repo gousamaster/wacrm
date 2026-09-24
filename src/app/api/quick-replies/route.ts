@@ -10,11 +10,13 @@ import { validateInteractivePayload } from '@/lib/whatsapp/interactive'
 
 export async function GET() {
   try {
-    const { supabase } = await getCurrentAccount()
-    // RLS (quick_replies_select) scopes to the caller's account.
-    const { data, error } = await supabase
+    const { accountId } = await getCurrentAccount()
+    // Use the already-authenticated account id and service client so shared
+    // workspace replies are reliably visible to every account member.
+    const { data, error } = await supabaseAdmin()
       .from('quick_replies')
       .select('*')
+      .eq('account_id', accountId)
       .order('created_at', { ascending: false })
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
     return NextResponse.json({ quick_replies: data ?? [] })
