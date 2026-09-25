@@ -40,8 +40,7 @@ type RangeDays = 7 | 30 | 90
 
 export default function DashboardPage() {
   const t = useTranslations('Dashboard.page')
-  const { defaultCurrency, accountRole } = useAuth()
-  const isAgent = accountRole === 'agent'
+  const { defaultCurrency, isAgent } = useAuth()
   const [metrics, setMetrics] = useState<MetricsBundle | null>(null)
   const [metricsLoading, setMetricsLoading] = useState(true)
 
