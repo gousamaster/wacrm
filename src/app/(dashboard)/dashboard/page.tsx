@@ -40,7 +40,8 @@ type RangeDays = 7 | 30 | 90
 
 export default function DashboardPage() {
   const t = useTranslations('Dashboard.page')
-  const { defaultCurrency } = useAuth()
+  const { defaultCurrency, accountRole } = useAuth()
+  const isAgent = accountRole === 'agent'
   const [metrics, setMetrics] = useState<MetricsBundle | null>(null)
   const [metricsLoading, setMetricsLoading] = useState(true)
 
@@ -188,8 +189,8 @@ export default function DashboardPage() {
         )}
       </div>
 
-      {/* Quick actions */}
-      <QuickActions />
+      {/* Quick actions are admin/owner tools; advisers stay focused on messaging. */}
+      {!isAgent && <QuickActions />}
 
       {/* Charts row */}
       {/* items-stretch (the grid default) stretches the two columns to
@@ -207,13 +208,15 @@ export default function DashboardPage() {
             onRangeChange={handleRangeChange}
           />
         </div>
-        <div className="h-full lg:col-span-2">
-          <PipelineDonut
-            data={pipeline}
-            loading={pipelineLoading}
-            currency={defaultCurrency}
-          />
-        </div>
+        {!isAgent && (
+          <div className="h-full lg:col-span-2">
+            <PipelineDonut
+              data={pipeline}
+              loading={pipelineLoading}
+              currency={defaultCurrency}
+            />
+          </div>
+        )}
       </div>
 
       {/* Response time */}
