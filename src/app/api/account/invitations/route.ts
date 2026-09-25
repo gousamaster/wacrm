@@ -93,7 +93,11 @@ function isHostAllowed(
 
 function getBaseUrl(request: Request): string {
   const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  if (explicit) return explicit.replace(/\/+$/, "");
+  // Ignore the upstream placeholder accidentally shipped in some forks.
+  // On Vercel previews the request host is the correct URL for invitations.
+  if (explicit && !explicit.includes("example.com")) {
+    return explicit.replace(/\/+$/, "");
+  }
 
   const allowList = parseAllowedHosts();
   const forwardedHost = request.headers
